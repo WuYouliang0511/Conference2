@@ -62,14 +62,14 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="top|start"
-            android:text="推流地址:" />
+            android:text="拉流地址:" />
 
         <TextSwitcher
             android:id="@+id/pull"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|start"
-            android:text="推流地址:" />
+            android:text="拉流地址:" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatButton

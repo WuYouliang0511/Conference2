@@ -55,8 +55,9 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
         setContentView(R.layout.activity_conference);
         showUserName();
         initParams();
-        initNodePlayerView();
+
         initRtmpPublisher();
+        new Handler().postDelayed(this::initNodePlayerView, 5000);
     }
 
     @Override
@@ -90,6 +91,7 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
     protected void onDestroy() {
         super.onDestroy();
         if (mResClient != null) {
+            mResClient.stopPreview(true);
             mResClient.destroy();
         }
     }
@@ -106,7 +108,9 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        mResClient.stopPreview(true);
+        if (mResClient != null) {
+
+        }
         return false;
     }
 
@@ -234,7 +238,7 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
 
                     Log.d(TAG, mDelays.toString());
 
-                    if (sum >= 400 * mDelays.size()&&System.currentTimeMillis() - lastResetTime > 10 * 1000)  {
+                    if (sum >= 400 * mDelays.size() && System.currentTimeMillis() - lastResetTime > 10 * 1000) {
                         lastResetTime = System.currentTimeMillis();
                         if (mNodePlayer != null) {
                             mNodePlayer.stop();
