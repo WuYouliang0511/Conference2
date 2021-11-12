@@ -45,6 +45,7 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
 
     private String mPullAddress;
     private String mPushAddress;
+    private String mOrientation;
 
     private Handler mHandler;
     private SparseLongArray mDelays;
@@ -130,6 +131,7 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
         Intent intent = getIntent();
         mPullAddress = intent.getStringExtra("pull");
         mPushAddress = intent.getStringExtra("push");
+        mOrientation = intent.getStringExtra("orientation");
     }
 
     private void initNodePlayerView() {
@@ -163,7 +165,7 @@ public class ConferenceActivity extends AppCompatActivity implements TextureView
         mResConfig.setVideoGOP(1);
         // setrender mode in softmode
         mResConfig.setRenderingMode(RESConfig.RenderingMode.OpenGLES);
-        mResConfig.setDefaultCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        mResConfig.setDefaultCamera(mOrientation.equals("前置") ? Camera.CameraInfo.CAMERA_FACING_FRONT : Camera.CameraInfo.CAMERA_FACING_BACK);
 
         int frontDirection, backDirection;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();

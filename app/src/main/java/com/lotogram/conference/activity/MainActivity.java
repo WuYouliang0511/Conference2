@@ -46,11 +46,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             "用户二"
     };
 
+    private static final String[] ORIENTATION = new String[]{
+            "前置",
+            "后置"
+    };
+
     private AppCompatSpinner mSpinner;
+    private AppCompatSpinner mOrientation;
     private TextSwitcher mPullAddress;
     private TextSwitcher mPushAddress;
 
-    private int currentIndex = 0;
+    private int userIndex = 0;
+    private int orientationIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +65,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         mSpinner = findViewById(R.id.spinner);
+        mOrientation = findViewById(R.id.orientation);
         mPullAddress = findViewById(R.id.pull);
         mPushAddress = findViewById(R.id.push);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_user, USER);
-        mSpinner.setAdapter(adapter);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.item_user, USER);
+        mSpinner.setAdapter(adapter1);
         mSpinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.item_user, ORIENTATION);
+        mOrientation.setAdapter(adapter2);
+        mOrientation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                orientationIndex = position;
+                Toast.makeText(MainActivity.this, ORIENTATION[orientationIndex], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mPushAddress.setFactory(this);
         mPullAddress.setFactory(this);
@@ -72,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, USER[position], Toast.LENGTH_SHORT).show();
-        currentIndex = position;
+        userIndex = position;
         mPullAddress.setText(PULL[position]);
         mPushAddress.setText(PUSH[position]);
     }
@@ -93,9 +116,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void toConference() {
         Intent intent = new Intent();
         intent.setClass(this, ConferenceActivity.class);
-        intent.putExtra("pull", PULL[currentIndex]);
-        intent.putExtra("push", PUSH[currentIndex]);
-        intent.putExtra("user", USER[currentIndex]);
+        intent.putExtra("pull", PULL[userIndex]);
+        intent.putExtra("push", PUSH[userIndex]);
+        intent.putExtra("user", USER[userIndex]);
+        intent.putExtra("orientation", ORIENTATION[orientationIndex]);
         startActivity(intent);
     }
 
